@@ -29,6 +29,7 @@ class GameScreen : Screen {
 
     private val obstacles = Array<Obstacle>()
     private var obstacleTimer = 0f
+    private var isAlive = true
 
     override fun show() {
         // setup debug camera controller to start at center of world
@@ -39,7 +40,7 @@ class GameScreen : Screen {
         DebugCameraController.handleDebugInput(delta)
         DebugCameraController.applyPositionToCamera(camera)
         // update world
-        update(delta)
+        if (isAlive) update(delta)
 
         GdxUtils.clearScreen()
 
@@ -49,7 +50,14 @@ class GameScreen : Screen {
     private fun update(delta: Float) {
         updatePlayer()
         updateObstacles(delta)
+
+        if (hasPlayerCollidedWithObstacle) isAlive = false
     }
+
+    private val hasPlayerCollidedWithObstacle: Boolean
+        get() {
+            return obstacles.any { it.hasCollidedWith(player) }
+        }
 
     private fun updateObstacles(delta: Float) {
         for (obstacle in obstacles) {
