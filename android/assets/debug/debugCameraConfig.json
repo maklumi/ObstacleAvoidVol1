@@ -14,5 +14,5 @@
 
   "resetKey" : "Delete",
   "logKey" : "Enter",
-  "quit" : "Q"
+  "quit" : "/"
 }

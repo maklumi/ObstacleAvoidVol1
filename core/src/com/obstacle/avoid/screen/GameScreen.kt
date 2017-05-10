@@ -3,6 +3,7 @@ package com.obstacle.avoid.screen
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Logger
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -45,8 +46,16 @@ class GameScreen : Screen {
     }
 
     private fun updatePlayer() {
-//        log.debug("playerX= ${player.position.x} playerY= ${player.position.y}")
         player.update()
+        clampPlayerPosition()
+    }
+
+    private fun clampPlayerPosition() {
+        val x = MathUtils.clamp(player.position.x,
+                player.bounds.radius,
+                GameConfig.WORLD_WIDTH - player.bounds.radius)
+
+        player.position.x = x
     }
 
     private fun renderDebug() {
