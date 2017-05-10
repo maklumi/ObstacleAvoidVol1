@@ -1,13 +1,18 @@
 package com.obstacle.avoid.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Logger
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.obstacle.avoid.assets.AssetPaths
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.entity.Obstacle
 import com.obstacle.avoid.entity.Player
@@ -31,6 +36,13 @@ class GameScreen : Screen {
     private var obstacleTimer = 0f
     private var isAlive = true
 
+    val hudCamera = OrthographicCamera()
+    val hudViewport = FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, hudCamera)
+    val batch = SpriteBatch()
+    val font = BitmapFont(Gdx.files.internal(AssetPaths.UI_FONT))
+    val layout = GlyphLayout()
+    var lives = GameConfig.LIVES_START
+
     override fun show() {
         // setup debug camera controller to start at center of world
         DebugCameraController.startPosition = Vector2(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y)
@@ -44,14 +56,32 @@ class GameScreen : Screen {
 
         GdxUtils.clearScreen()
 
+        renderUI()
+
         renderDebug()
+    }
+
+    private fun renderUI() {
+        batch.apply {
+            projectionMatrix = hudCamera.combined
+            begin()
+        }
+
+        val livesText = "LIVES: $lives"
+        layout.setText(font, livesText)
+        font.draw(batch, livesText, 20f, GameConfig.HUD_HEIGHT - layout.height)
+
+        batch.end()
     }
 
     private fun update(delta: Float) {
         updatePlayer()
         updateObstacles(delta)
 
-        if (hasPlayerCollidedWithObstacle) isAlive = false
+        if (hasPlayerCollidedWithObstacle) {
+//            isAlive = false
+            lives--
+        }
     }
 
     private val hasPlayerCollidedWithObstacle: Boolean
@@ -116,6 +146,7 @@ class GameScreen : Screen {
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, true)
+        hudViewport.update(width, height, true)
         ViewportUtils.debugPixelPerUnit(viewport)
     }
 
@@ -131,5 +162,7 @@ class GameScreen : Screen {
 
     override fun dispose() {
         renderer.dispose()
+        batch.dispose()
+        font.dispose()
     }
 }
