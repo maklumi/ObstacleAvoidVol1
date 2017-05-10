@@ -19,4 +19,6 @@ object GameConfig {
     val MAX_PLAYER_X_SPEED = 0.25f
 
     val OBSTACLE_SPAWN_TIME = 0.25f
+
+    val SCORE_INTERVAL = 1.25f
 }
