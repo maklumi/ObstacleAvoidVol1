@@ -27,14 +27,26 @@ class GameScreen : Screen {
     }
 
     override fun render(delta: Float) {
+        // update world
+        update(delta)
+
         GdxUtils.clearScreen()
 
         renderDebug()
     }
 
+    private fun update(delta: Float) {
+        updatePlayer()
+    }
+
+    private fun updatePlayer() {
+//        log.debug("playerX= ${player.position.x} playerY= ${player.position.y}")
+        player.update()
+    }
+
     private fun renderDebug() {
         ViewportUtils.drawGrid(viewport, renderer)
-        
+
         renderer.projectionMatrix = camera.combined
         renderer.begin(ShapeRenderer.ShapeType.Line)
 
