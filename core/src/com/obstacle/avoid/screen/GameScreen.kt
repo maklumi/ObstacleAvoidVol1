@@ -1,29 +1,38 @@
 package com.obstacle.avoid.screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.Logger
+import com.badlogic.gdx.utils.viewport.FitViewport
+import com.obstacle.avoid.config.GameConfig
+import com.obstacle.avoid.util.GdxUtils
+import com.obstacle.avoid.util.ViewportUtils
 
 
 class GameScreen : Screen {
+    private val log = Logger(GameScreen::class.java.simpleName, Logger.DEBUG)
 
-    lateinit var batch : SpriteBatch
+    val camera = OrthographicCamera()
+    val viewport = FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera)
+    val renderer = ShapeRenderer()
 
     override fun show() {
-        batch = SpriteBatch()
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(1f, 0f,0f,1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        GdxUtils.clearScreen()
 
-        batch.begin()
+        drawDebug()
+    }
 
-        batch.end()
+    private fun drawDebug() {
+        ViewportUtils.drawGrid(viewport, renderer)
     }
 
     override fun resize(width: Int, height: Int) {
+        viewport.update(width, height)
+        ViewportUtils.debugPixelPerUnit(viewport)
     }
 
     override fun hide() {
@@ -37,6 +46,6 @@ class GameScreen : Screen {
     }
 
     override fun dispose() {
-        batch.dispose()
+        renderer.dispose()
     }
 }
