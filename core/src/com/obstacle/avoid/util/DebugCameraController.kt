@@ -2,7 +2,6 @@ package com.obstacle.avoid.util
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
@@ -12,25 +11,11 @@ import com.badlogic.gdx.utils.Logger
 object DebugCameraController {
 
     private val log = Logger(DebugCameraController::class.java.simpleName, Logger.DEBUG)
-
-    private val DEFAULT_KEY_LEFT = Input.Keys.A
-    private val DEFAULT_KEY_RIGHT = Input.Keys.D
-    private val DEFAULT_KEY_UP = Input.Keys.W
-    private val DEFAULT_KEY_DOWN = Input.Keys.S
-
-    private val DEFAULT_KEY_ZOOM_IN = Input.Keys.COMMA
-    private val DEFAULT_KEY_ZOOM_OUT = Input.Keys.PERIOD
-    private val DEFAULT_KEY_RESET = Input.Keys.BACKSPACE
-    private val DEFAULT_KEY_LOG = Input.Keys.ENTER
-
-    private val DEFAULT_ZOOM_SPEED = 2f
-    private val DEFAULT_MAX_ZOOM_IN = 0.2f
-    private val DEFAULT_MAX_ZOOM_OUT = 20f
-    private val DEFAULT_MOVE_SPEED = 20f
+    private val config = DebugCameraConfig
 
     private var zoom = 1f
         set(value) {
-            field = MathUtils.clamp(value, DEFAULT_MAX_ZOOM_IN, DEFAULT_MAX_ZOOM_OUT)
+            field = MathUtils.clamp(value, config.maxZoomIn, config.maxZoomOut)
         }
 
     private var position = Vector2()
@@ -39,6 +24,10 @@ object DebugCameraController {
             field.set(value.x, value.y)
             position.set(value.x, value.y)
         }
+
+    init {
+        log.debug(config.toString())
+    }
 
     fun applyPositionToCamera(camera: OrthographicCamera) {
         camera.position.set(position, 0f)
@@ -49,25 +38,26 @@ object DebugCameraController {
     fun handleDebugInput(delta: Float) {
         if (Gdx.app.type != Application.ApplicationType.Desktop) return
 
-        val moveSpeed = DEFAULT_MOVE_SPEED * delta
-        val zoomSpeed = DEFAULT_ZOOM_SPEED * delta
+        val moveSpeed = config.moveSpeed * delta
+        val zoomSpeed = config.zoomSpeed * delta
         when {
-            Gdx.input.isKeyPressed(DEFAULT_KEY_LEFT) -> {
+            config.isLeftPressed -> {
                 moveLeft(moveSpeed)
             }
-            Gdx.input.isKeyPressed(DEFAULT_KEY_RIGHT) -> {
+            config.isRightPressed -> {
                 moveRight(moveSpeed)
             }
-            Gdx.input.isKeyPressed(DEFAULT_KEY_UP) -> {
+            config.isUpPressed -> {
                 moveUp(moveSpeed)
             }
-            Gdx.input.isKeyPressed(DEFAULT_KEY_DOWN) -> {
+            config.isDownPressed -> {
                 moveDown(moveSpeed)
             }
-            Gdx.input.isKeyPressed(DEFAULT_KEY_ZOOM_IN) -> zoomIn(zoomSpeed)
-            Gdx.input.isKeyPressed(DEFAULT_KEY_ZOOM_OUT) -> zoomOut(zoomSpeed)
-            Gdx.input.isKeyPressed(DEFAULT_KEY_RESET) -> reset()
-            Gdx.input.isKeyPressed(DEFAULT_KEY_LOG) -> logDebug()
+            config.isZoomInPressed -> zoomIn(zoomSpeed)
+            config.isZoomOutPressed -> zoomOut(zoomSpeed)
+            config.isResetPressed -> reset()
+            config.isLogPressed -> logDebug()
+            config.isQuitPressed -> Gdx.app.exit()
         }
     }
 
