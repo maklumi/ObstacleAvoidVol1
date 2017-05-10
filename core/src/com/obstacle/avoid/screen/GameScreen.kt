@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Logger
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.entity.Player
+import com.obstacle.avoid.util.DebugCameraController
 import com.obstacle.avoid.util.GdxUtils
 import com.obstacle.avoid.util.ViewportUtils
 
@@ -24,9 +25,13 @@ class GameScreen : Screen {
     }
 
     override fun show() {
+        // setup debug camera controller to start at center of world
+        DebugCameraController.startPosition = Vector2(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y)
     }
 
     override fun render(delta: Float) {
+        DebugCameraController.handleDebugInput(delta)
+        DebugCameraController.applyPositionToCamera(camera)
         // update world
         update(delta)
 
