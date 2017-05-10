@@ -45,6 +45,7 @@ class GameScreen : Screen {
 
     private var scoreTimer = 0f
     private var score = 0
+    private var displayScore = 0
 
     override fun show() {
         // setup debug camera controller to start at center of world
@@ -74,7 +75,7 @@ class GameScreen : Screen {
         layout.setText(font, livesText)
         font.draw(batch, livesText, 20f, GameConfig.HUD_HEIGHT - layout.height)
 
-        val scoreText = "SCORE: $score"
+        val scoreText = "SCORE: $displayScore"
         layout.setText(font, scoreText)
         font.draw(batch, scoreText, GameConfig.HUD_WIDTH - layout.width - 20f,
                 GameConfig.HUD_HEIGHT - layout.height)
@@ -86,6 +87,7 @@ class GameScreen : Screen {
         updatePlayer()
         updateObstacles(delta)
         updateScore(delta)
+        updateDisplayScore(delta)
 
         if (hasPlayerCollidedWithObstacle) {
 //            isAlive = false
@@ -98,6 +100,12 @@ class GameScreen : Screen {
         if (scoreTimer >= GameConfig.SCORE_INTERVAL) {
             score += MathUtils.random(1, 5)
             scoreTimer = 0f
+        }
+    }
+
+    private fun updateDisplayScore(delta: Float) {
+        if (displayScore < score) {
+            displayScore = Math.min(score, displayScore + (60 * delta).toInt())
         }
     }
 
