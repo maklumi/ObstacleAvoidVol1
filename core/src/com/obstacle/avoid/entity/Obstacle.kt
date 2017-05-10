@@ -9,14 +9,18 @@ class Obstacle : ObjectBase(BOUNDS_RADIUS) {
         private val BOUNDS_RADIUS = 0.3f
     }
 
-    private val ySpeed = 0.01f
+    private val ySpeed = 0.1f
+
+    var isAlreadyHit = false
 
     fun update() {
         position.y -= ySpeed
     }
 
     fun hasCollidedWith(player: Player): Boolean {
-        return Intersector.overlaps(player.bounds, this.bounds)
+        val overlaps = Intersector.overlaps(player.bounds, this.bounds)
+        if (overlaps) isAlreadyHit = overlaps
+        return overlaps
     }
 
 }

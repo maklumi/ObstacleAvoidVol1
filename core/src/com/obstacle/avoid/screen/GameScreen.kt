@@ -47,6 +47,9 @@ class GameScreen : Screen {
     private var score = 0
     private var displayScore = 0
 
+    var isGameOver = false
+        get() = lives <= 0
+
     override fun show() {
         // setup debug camera controller to start at center of world
         DebugCameraController.startPosition = Vector2(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y)
@@ -84,6 +87,8 @@ class GameScreen : Screen {
     }
 
     private fun update(delta: Float) {
+        if (isGameOver) return
+
         updatePlayer()
         updateObstacles(delta)
         updateScore(delta)
@@ -111,7 +116,7 @@ class GameScreen : Screen {
 
     private val hasPlayerCollidedWithObstacle: Boolean
         get() {
-            return obstacles.any { it.hasCollidedWith(player) }
+            return obstacles.any { !it.isAlreadyHit && it.hasCollidedWith(player) }
         }
 
     private fun updateObstacles(delta: Float) {
