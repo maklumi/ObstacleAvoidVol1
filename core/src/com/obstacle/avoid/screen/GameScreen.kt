@@ -62,7 +62,7 @@ class GameScreen : Screen {
         obstacleTimer += delta
         if (obstacleTimer >= GameConfig.OBSTACLE_SPAWN_TIME) {
             val obstacle = Obstacle()
-            
+
             val min = obstacle.bounds.radius
             val max = GameConfig.WORLD_WIDTH - obstacle.bounds.radius
             val x = MathUtils.random(min, max)
