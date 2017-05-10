@@ -12,4 +12,6 @@ object GameConfig {
     val WORLD_HEIGHT = 10f
     val WORLD_CENTER_X = WORLD_WIDTH / 2f
     val WORLD_CENTER_Y = WORLD_HEIGHT / 2f
+
+    val OBSTACLE_SPAWN_TIME = 0.25f
 }
