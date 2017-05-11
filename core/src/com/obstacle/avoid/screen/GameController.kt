@@ -17,14 +17,14 @@ class GameController {
         position = Vector2(GameConfig.WORLD_CENTER_X, 1f)
     }
 
-    private val obstacles = Array<Obstacle>()
+    val obstacles = Array<Obstacle>()
     private var obstacleTimer = 0f
-    private var isAlive = true
+    var isAlive = true
     var lives = GameConfig.LIVES_START
 
     private var scoreTimer = 0f
     private var score = 0
-    private var displayScore = 0
+    var displayScore = 0
 
     var isGameOver = false
         get() = lives <= 0

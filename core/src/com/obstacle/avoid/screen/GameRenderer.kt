@@ -14,10 +14,9 @@ import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.util.DebugCameraController
 import com.obstacle.avoid.util.GdxUtils
 import com.obstacle.avoid.util.ViewportUtils
-import sun.audio.AudioPlayer.player
 
 
-class GameRenderer : Disposable{
+class GameRenderer(val controller: GameController) : Disposable {
 
     val camera = OrthographicCamera()
     val viewport = FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera)
@@ -48,6 +47,7 @@ class GameRenderer : Disposable{
         hudViewport.update(width, height, true)
         ViewportUtils.debugPixelPerUnit(viewport)
     }
+
     override fun dispose() {
         renderer.dispose()
         batch.dispose()
@@ -60,11 +60,11 @@ class GameRenderer : Disposable{
             begin()
         }
 
-        val livesText = "LIVES: $lives"
+        val livesText = "LIVES: ${controller.lives}"
         layout.setText(font, livesText)
         font.draw(batch, livesText, 20f, GameConfig.HUD_HEIGHT - layout.height)
 
-        val scoreText = "SCORE: $displayScore"
+        val scoreText = "SCORE: ${controller.displayScore}"
         layout.setText(font, scoreText)
         font.draw(batch, scoreText, GameConfig.HUD_WIDTH - layout.width - 20f,
                 GameConfig.HUD_HEIGHT - layout.height)
@@ -84,8 +84,10 @@ class GameRenderer : Disposable{
     }
 
     private fun drawDebug() {
+        val player = controller.player
         player.drawDebug(renderer)
 
+        val obstacles = controller.obstacles
         for (it in obstacles) {
             it.drawDebug(renderer)
         }
