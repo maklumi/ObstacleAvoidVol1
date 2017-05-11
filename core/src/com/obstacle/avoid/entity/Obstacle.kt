@@ -1,6 +1,7 @@
 package com.obstacle.avoid.entity
 
 import com.badlogic.gdx.math.Intersector
+import com.obstacle.avoid.config.GameConfig
 
 
 class Obstacle : ObjectBase(BOUNDS_RADIUS) {
@@ -9,7 +10,7 @@ class Obstacle : ObjectBase(BOUNDS_RADIUS) {
         private val BOUNDS_RADIUS = 0.3f
     }
 
-    private val ySpeed = 0.1f
+    var ySpeed = GameConfig.EASY_SPEED
 
     var isAlreadyHit = false
 

@@ -21,4 +21,9 @@ object GameConfig {
     val OBSTACLE_SPAWN_TIME = 0.25f
 
     val SCORE_INTERVAL = 1.25f
+
+    // difficulty level
+    val EASY_SPEED = 0.08f
+    val MEDIUM_SPEED = 0.12f
+    val HARD_SPEED = 0.16f
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Logger
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.assets.AssetPaths
+import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.entity.Obstacle
 import com.obstacle.avoid.entity.Player
@@ -49,6 +50,8 @@ class GameScreen : Screen {
 
     var isGameOver = false
         get() = lives <= 0
+
+    var difficultyLevel = DifficultyLevel.EASY
 
     override fun show() {
         // setup debug camera controller to start at center of world
@@ -137,6 +140,7 @@ class GameScreen : Screen {
             val y = GameConfig.WORLD_HEIGHT
 
             obstacle.position = Vector2(x, y)
+            obstacle.ySpeed = difficultyLevel.obstacleSpeed
             obstacles.add(obstacle)
             obstacleTimer = 0f
         }
