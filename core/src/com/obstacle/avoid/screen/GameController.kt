@@ -50,7 +50,15 @@ class GameController {
 
         if (hasPlayerCollidedWithObstacle) {
             lives--
+            if (!isGameOver) restart()
         }
+    }
+
+    private fun restart() {
+        obstaclePool.freeAll(obstacles)
+        obstacles.clear()
+        player.position.set(GameConfig.WORLD_CENTER_X - GameConfig.PLAYER_SIZE / 2,
+                1f - GameConfig.PLAYER_SIZE / 2)
     }
 
     private fun updateScore(delta: Float) {
