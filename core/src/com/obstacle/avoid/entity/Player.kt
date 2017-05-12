@@ -12,6 +12,9 @@ class Player : ObjectBase(BOUNDS_RADIUS) {
         val SIZE = BOUNDS_RADIUS * 2
     }
 
+    init {
+        setSize(SIZE, SIZE)
+    }
 
     fun update() {
         var xSpeed = 0f

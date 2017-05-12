@@ -16,6 +16,10 @@ class Obstacle : ObjectBase(BOUNDS_RADIUS), Pool.Poolable {
 
     var isAlreadyHit = false
 
+    init {
+        setSize(SIZE, SIZE)
+    }
+
     fun update() {
         position.y -= ySpeed
     }
