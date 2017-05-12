@@ -70,6 +70,15 @@ class GameController {
             obstacle.update()
         }
         createNewObstacles(delta)
+        removePassedObstacles()
+    }
+
+    private fun removePassedObstacles() {
+        if (obstacles.size == 0) return
+        val first = obstacles.first()
+        if (first.position.y < -Obstacle.SIZE) {
+            obstacles.removeValue(first, true)
+        }
     }
 
     private fun createNewObstacles(delta: Float) {

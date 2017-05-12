@@ -8,6 +8,7 @@ class Obstacle : ObjectBase(BOUNDS_RADIUS) {
 
     companion object {
         private val BOUNDS_RADIUS = 0.3f
+        val SIZE = BOUNDS_RADIUS * 2
     }
 
     var ySpeed = GameConfig.EASY_SPEED
