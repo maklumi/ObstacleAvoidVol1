@@ -3,7 +3,8 @@ package com.obstacle.avoid.screen
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.Logger
+import com.badlogic.gdx.utils.Pool
+import com.badlogic.gdx.utils.Pools
 import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.entity.Obstacle
@@ -11,7 +12,7 @@ import com.obstacle.avoid.entity.Player
 
 
 class GameController {
-    private val log = Logger(GameController::class.java.simpleName, Logger.DEBUG)
+//    private val log = Logger(GameController::class.java.simpleName, Logger.DEBUG)
 
     val player = Player().apply {
         position = Vector2(GameConfig.WORLD_CENTER_X, 1f)
@@ -19,7 +20,6 @@ class GameController {
 
     val obstacles = Array<Obstacle>()
     private var obstacleTimer = 0f
-    var isAlive = true
     var lives = GameConfig.LIVES_START
 
     private var scoreTimer = 0f
@@ -31,6 +31,7 @@ class GameController {
 
     var difficultyLevel = DifficultyLevel.EASY
 
+    val obstaclePool: Pool<Obstacle> = Pools.get(Obstacle::class.java, 20)
 
     fun update(delta: Float) {
         if (isGameOver) return
@@ -41,7 +42,6 @@ class GameController {
         updateDisplayScore(delta)
 
         if (hasPlayerCollidedWithObstacle) {
-//            isAlive = false
             lives--
         }
     }
@@ -78,13 +78,14 @@ class GameController {
         val first = obstacles.first()
         if (first.position.y < -Obstacle.SIZE) {
             obstacles.removeValue(first, true)
+            obstaclePool.free(first)
         }
     }
 
     private fun createNewObstacles(delta: Float) {
         obstacleTimer += delta
         if (obstacleTimer >= GameConfig.OBSTACLE_SPAWN_TIME) {
-            val obstacle = Obstacle()
+            val obstacle = obstaclePool.obtain()
 
             val min = obstacle.bounds.radius
             val max = GameConfig.WORLD_WIDTH - obstacle.bounds.radius

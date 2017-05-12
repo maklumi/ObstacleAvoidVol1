@@ -1,10 +1,11 @@
 package com.obstacle.avoid.entity
 
 import com.badlogic.gdx.math.Intersector
+import com.badlogic.gdx.utils.Pool
 import com.obstacle.avoid.config.GameConfig
 
 
-class Obstacle : ObjectBase(BOUNDS_RADIUS) {
+class Obstacle : ObjectBase(BOUNDS_RADIUS), Pool.Poolable {
 
     companion object {
         private val BOUNDS_RADIUS = 0.3f
@@ -25,4 +26,7 @@ class Obstacle : ObjectBase(BOUNDS_RADIUS) {
         return overlaps
     }
 
+    override fun reset() {
+        isAlreadyHit = false
+    }
 }
