@@ -2,6 +2,7 @@ package com.obstacle.avoid.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -11,6 +12,8 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.assets.AssetPaths
 import com.obstacle.avoid.config.GameConfig
+import com.obstacle.avoid.entity.Obstacle
+import com.obstacle.avoid.entity.Player
 import com.obstacle.avoid.util.DebugCameraController
 import com.obstacle.avoid.util.GdxUtils
 import com.obstacle.avoid.util.ViewportUtils
@@ -27,6 +30,10 @@ class GameRenderer(val controller: GameController) : Disposable {
     val font = BitmapFont(Gdx.files.internal(AssetPaths.UI_FONT))
     val layout = GlyphLayout()
 
+    private val playerTexture = Texture(Gdx.files.internal("gameplay/player.png"))
+    private val obstacleTexture = Texture(Gdx.files.internal("gameplay/obstacle.png"))
+    private val bgTexture = Texture(Gdx.files.internal("gameplay/background.png"))
+
     init {
         DebugCameraController.startPosition = Vector2(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y)
     }
@@ -36,6 +43,8 @@ class GameRenderer(val controller: GameController) : Disposable {
         DebugCameraController.applyPositionToCamera(camera)
 
         GdxUtils.clearScreen()
+
+        renderGamePlay()
 
         renderUI()
 
@@ -52,6 +61,33 @@ class GameRenderer(val controller: GameController) : Disposable {
         renderer.dispose()
         batch.dispose()
         font.dispose()
+        playerTexture.dispose()
+        obstacleTexture.dispose()
+        bgTexture.dispose()
+    }
+
+    private fun renderGamePlay() {
+        viewport.apply() // size is 10 x 6
+        batch.apply {
+            projectionMatrix = camera.combined // not hudCamera
+            begin()
+        }
+
+        draw()
+
+        batch.end()
+    }
+
+    private fun draw() {
+        val bg = controller.background
+        batch.draw(bgTexture, bg.x, bg.y, bg.width, bg.height)
+
+        val player = controller.player
+        batch.draw(playerTexture, player.position.x, player.position.y, Player.SIZE, Player.SIZE)
+
+        val obstacles = controller.obstacles
+        obstacles.forEach { batch.draw(obstacleTexture, it.position.x, it.position.y, Obstacle.SIZE, Obstacle.SIZE) }
+
     }
 
     private fun renderUI() {

@@ -9,6 +9,7 @@ class Player : ObjectBase(BOUNDS_RADIUS) {
 
     companion object {
         private val BOUNDS_RADIUS = 0.4f
+        val SIZE = BOUNDS_RADIUS * 2
     }
 
 

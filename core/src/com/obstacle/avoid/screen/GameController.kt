@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
 import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
+import com.obstacle.avoid.entity.Background
 import com.obstacle.avoid.entity.Obstacle
 import com.obstacle.avoid.entity.Player
 
@@ -32,6 +33,10 @@ class GameController {
     var difficultyLevel = DifficultyLevel.EASY
 
     val obstaclePool: Pool<Obstacle> = Pools.get(Obstacle::class.java, 20)
+    val background = Background().apply {
+        setPosition(0f, 0f)
+        setSize(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT)
+    }
 
     fun update(delta: Float) {
         if (isGameOver) return
