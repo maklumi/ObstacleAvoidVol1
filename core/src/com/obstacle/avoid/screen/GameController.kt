@@ -95,7 +95,7 @@ class GameController {
             val obstacle = obstaclePool.obtain()
 
             val min = obstacle.bounds.radius
-            val max = GameConfig.WORLD_WIDTH - obstacle.bounds.radius
+            val max = GameConfig.WORLD_WIDTH - GameConfig.OBSTACLE_SIZE
             val x = MathUtils.random(min, max)
             val y = GameConfig.WORLD_HEIGHT
 
