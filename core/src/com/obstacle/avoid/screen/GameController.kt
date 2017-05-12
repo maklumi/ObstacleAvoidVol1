@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
 import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
+import com.obstacle.avoid.config.GameConfig.OBSTACLE_SIZE
 import com.obstacle.avoid.entity.Background
 import com.obstacle.avoid.entity.Obstacle
 import com.obstacle.avoid.entity.Player
@@ -16,7 +17,8 @@ class GameController {
 //    private val log = Logger(GameController::class.java.simpleName, Logger.DEBUG)
 
     val player = Player().apply {
-        position = Vector2(GameConfig.WORLD_CENTER_X, 1f)
+        position = Vector2(GameConfig.WORLD_CENTER_X - GameConfig.PLAYER_SIZE / 2,
+                1f - GameConfig.PLAYER_SIZE / 2)
     }
 
     val obstacles = Array<Obstacle>()
@@ -81,7 +83,7 @@ class GameController {
     private fun removePassedObstacles() {
         if (obstacles.size == 0) return
         val first = obstacles.first()
-        if (first.position.y < -Obstacle.SIZE) {
+        if (first.position.y < -OBSTACLE_SIZE) {
             obstacles.removeValue(first, true)
             obstaclePool.free(first)
         }
@@ -111,8 +113,8 @@ class GameController {
 
     private fun clampPlayerPosition() {
         val x = MathUtils.clamp(player.position.x,
-                player.bounds.radius,
-                GameConfig.WORLD_WIDTH - player.bounds.radius)
+                0f,
+                GameConfig.WORLD_WIDTH - GameConfig.PLAYER_SIZE)
 
         player.position.x = x
     }

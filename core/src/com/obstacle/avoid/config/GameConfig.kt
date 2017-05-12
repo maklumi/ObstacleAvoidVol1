@@ -26,4 +26,10 @@ object GameConfig {
     val EASY_SPEED = 0.08f
     val MEDIUM_SPEED = 0.12f
     val HARD_SPEED = 0.16f
+
+    val PLAYER_BOUNDS_RADIUS = 0.4f
+    val PLAYER_SIZE = PLAYER_BOUNDS_RADIUS * 2
+
+    val OBSTACLE_BOUNDS_RADIUS = 0.3f
+    val OBSTACLE_SIZE = OBSTACLE_BOUNDS_RADIUS * 2
 }

@@ -3,17 +3,14 @@ package com.obstacle.avoid.entity
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.obstacle.avoid.config.GameConfig.MAX_PLAYER_X_SPEED
+import com.obstacle.avoid.config.GameConfig.PLAYER_BOUNDS_RADIUS
+import com.obstacle.avoid.config.GameConfig.PLAYER_SIZE
 
 
-class Player : ObjectBase(BOUNDS_RADIUS) {
-
-    companion object {
-        private val BOUNDS_RADIUS = 0.4f
-        val SIZE = BOUNDS_RADIUS * 2
-    }
+class Player : ObjectBase(PLAYER_BOUNDS_RADIUS) {
 
     init {
-        setSize(SIZE, SIZE)
+        setSize(PLAYER_SIZE, PLAYER_SIZE)
     }
 
     fun update() {

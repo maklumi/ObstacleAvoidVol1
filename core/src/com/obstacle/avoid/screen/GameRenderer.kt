@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.assets.AssetPaths
 import com.obstacle.avoid.config.GameConfig
-import com.obstacle.avoid.entity.Obstacle
-import com.obstacle.avoid.entity.Player
+import com.obstacle.avoid.config.GameConfig.OBSTACLE_SIZE
+import com.obstacle.avoid.config.GameConfig.PLAYER_SIZE
 import com.obstacle.avoid.util.DebugCameraController
 import com.obstacle.avoid.util.GdxUtils
 import com.obstacle.avoid.util.ViewportUtils
@@ -83,10 +83,10 @@ class GameRenderer(val controller: GameController) : Disposable {
         batch.draw(bgTexture, bg.x, bg.y, bg.width, bg.height)
 
         val player = controller.player
-        batch.draw(playerTexture, player.position.x, player.position.y, Player.SIZE, Player.SIZE)
+        batch.draw(playerTexture, player.position.x, player.position.y, PLAYER_SIZE, PLAYER_SIZE)
 
         val obstacles = controller.obstacles
-        obstacles.forEach { batch.draw(obstacleTexture, it.position.x, it.position.y, Obstacle.SIZE, Obstacle.SIZE) }
+        obstacles.forEach { batch.draw(obstacleTexture, it.position.x, it.position.y, OBSTACLE_SIZE, OBSTACLE_SIZE) }
 
     }
 
