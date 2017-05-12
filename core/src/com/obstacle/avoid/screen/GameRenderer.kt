@@ -55,6 +55,7 @@ class GameRenderer(val controller: GameController) : Disposable {
     }
 
     private fun renderUI() {
+        hudViewport.apply()
         batch.apply {
             projectionMatrix = hudCamera.combined
             begin()
@@ -73,6 +74,7 @@ class GameRenderer(val controller: GameController) : Disposable {
     }
 
     private fun renderDebug() {
+        viewport.apply()
         ViewportUtils.drawGrid(viewport, renderer)
 
         renderer.projectionMatrix = camera.combined
