@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -41,6 +42,15 @@ class GameRenderer(val controller: GameController) : Disposable {
     fun render(delta: Float) {
         DebugCameraController.handleDebugInput(delta)
         DebugCameraController.applyPositionToCamera(camera)
+
+        if (Gdx.input.isTouched && !controller.isGameOver) {
+            val screenPos = Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()) // left top is (0,0)
+            val worldPos = viewport.unproject(screenPos.cpy())
+//            println("screenPos $screenPos , worldPos $worldPos")
+
+            val player = controller.player
+            player.position.x = MathUtils.clamp(worldPos.x, 0f, GameConfig.WORLD_WIDTH - player.width)
+        }
 
         GdxUtils.clearScreen()
 

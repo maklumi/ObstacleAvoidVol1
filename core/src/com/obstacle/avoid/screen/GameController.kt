@@ -1,5 +1,7 @@
 package com.obstacle.avoid.screen
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
@@ -115,7 +117,17 @@ class GameController {
     }
 
     private fun updatePlayer() {
-        player.update()
+        var xSpeed = 0f
+
+        when {
+            Gdx.input.isKeyPressed(Input.Keys.RIGHT) -> {
+                xSpeed = GameConfig.MAX_PLAYER_X_SPEED
+            }
+            Gdx.input.isKeyPressed(Input.Keys.LEFT) -> {
+                xSpeed = -GameConfig.MAX_PLAYER_X_SPEED
+            }
+        }
+        player.position.x += xSpeed
         clampPlayerPosition()
     }
 
