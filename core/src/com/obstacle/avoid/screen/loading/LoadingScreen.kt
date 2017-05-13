@@ -30,6 +30,7 @@ class LoadingScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
     override fun show() {
         assetManager.load(AssetDescriptors.FONT)
         assetManager.load(AssetDescriptors.GAME_PLAY)
+        assetManager.load(AssetDescriptors.UI)
     }
 
     override fun render(delta: Float) {

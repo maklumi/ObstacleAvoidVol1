@@ -9,5 +9,6 @@ object AssetDescriptors {
 
     val FONT = AssetDescriptor<BitmapFont>(AssetPaths.UI_FONT, BitmapFont::class.java)
     val GAME_PLAY = AssetDescriptor<TextureAtlas>(AssetPaths.GAME_PLAY, TextureAtlas::class.java)
+    val UI = AssetDescriptor<TextureAtlas>(AssetPaths.UI, TextureAtlas::class.java)
 
 }
