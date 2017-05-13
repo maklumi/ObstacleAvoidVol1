@@ -12,10 +12,7 @@ class GameScreen(game: ObstacleAvoidGame) : Screen {
 
     override fun show() {
         assetManager.load(AssetDescriptors.FONT)
-        assetManager.load(AssetDescriptors.BACKGROUND)
-        assetManager.load(AssetDescriptors.OBSTACLE)
-        assetManager.load(AssetDescriptors.PLAYER)
-
+        assetManager.load(AssetDescriptors.GAME_PLAY)
         assetManager.finishLoading()
 
         renderer = GameRenderer(assetManager, controller)

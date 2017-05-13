@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.assets.AssetDescriptors
+import com.obstacle.avoid.assets.RegionNames
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.config.GameConfig.OBSTACLE_SIZE
 import com.obstacle.avoid.config.GameConfig.PLAYER_SIZE
@@ -31,9 +32,10 @@ class GameRenderer(assetManager: AssetManager, val controller: GameController) :
     val font: BitmapFont = assetManager[AssetDescriptors.FONT]
     val layout = GlyphLayout()
 
-    private val playerTexture = assetManager[AssetDescriptors.PLAYER]
-    private val obstacleTexture = assetManager[AssetDescriptors.OBSTACLE]
-    private val bgTexture = assetManager[AssetDescriptors.BACKGROUND]
+    private val gamePlayAtlas = assetManager[AssetDescriptors.GAME_PLAY]
+    private val playerRegion = gamePlayAtlas.findRegion(RegionNames.PLAYER)
+    private val obstacleRegion = gamePlayAtlas.findRegion(RegionNames.OBSTACLE)
+    private val bgRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND)
 
     init {
         DebugCameraController.startPosition = Vector2(GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y)
@@ -86,13 +88,13 @@ class GameRenderer(assetManager: AssetManager, val controller: GameController) :
 
     private fun draw() {
         val bg = controller.background
-        batch.draw(bgTexture, bg.x, bg.y, bg.width, bg.height)
+        batch.draw(bgRegion, bg.x, bg.y, bg.width, bg.height)
 
         val player = controller.player
-        batch.draw(playerTexture, player.position.x, player.position.y, PLAYER_SIZE, PLAYER_SIZE)
+        batch.draw(playerRegion, player.position.x, player.position.y, PLAYER_SIZE, PLAYER_SIZE)
 
         val obstacles = controller.obstacles
-        obstacles.forEach { batch.draw(obstacleTexture, it.position.x, it.position.y, OBSTACLE_SIZE, OBSTACLE_SIZE) }
+        obstacles.forEach { batch.draw(obstacleRegion, it.position.x, it.position.y, OBSTACLE_SIZE, OBSTACLE_SIZE) }
 
     }
 
