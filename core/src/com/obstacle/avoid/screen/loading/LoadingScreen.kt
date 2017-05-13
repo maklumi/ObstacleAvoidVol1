@@ -8,6 +8,7 @@ import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.screen.game.GameScreen
+import com.obstacle.avoid.screen.menu.MenuScreen
 import com.obstacle.avoid.util.GdxUtils
 
 class LoadingScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
@@ -46,7 +47,7 @@ class LoadingScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
 
         renderer.end()
 
-        if (shouldChangeScreen) game.screen = GameScreen(game)
+        if (shouldChangeScreen) game.screen = MenuScreen(game)
     }
 
     override fun resize(width: Int, height: Int) {

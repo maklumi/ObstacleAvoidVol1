@@ -21,14 +21,13 @@ import com.obstacle.avoid.util.GdxUtils
 import com.obstacle.avoid.util.ViewportUtils
 
 
-class GameRenderer(assetManager: AssetManager, val controller: GameController) : Disposable {
+class GameRenderer(val batch: SpriteBatch, assetManager: AssetManager, val controller: GameController) : Disposable {
 
     val camera = OrthographicCamera()
     val viewport = FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera)
     val renderer = ShapeRenderer()
     val hudCamera = OrthographicCamera()
     val hudViewport = FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, hudCamera)
-    val batch = SpriteBatch()
     val font: BitmapFont = assetManager[AssetDescriptors.FONT]
     val layout = GlyphLayout()
 
@@ -71,7 +70,6 @@ class GameRenderer(assetManager: AssetManager, val controller: GameController) :
 
     override fun dispose() {
         renderer.dispose()
-        batch.dispose()
     }
 
     private fun renderGamePlay() {

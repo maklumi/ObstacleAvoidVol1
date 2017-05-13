@@ -4,7 +4,7 @@ import com.badlogic.gdx.Screen
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 
-class GameScreen(game: ObstacleAvoidGame) : Screen {
+class GameScreen(val game: ObstacleAvoidGame) : Screen {
 
     private val controller = GameController()
     private val assetManager = game.assetManager
@@ -15,7 +15,7 @@ class GameScreen(game: ObstacleAvoidGame) : Screen {
         assetManager.load(AssetDescriptors.GAME_PLAY)
         assetManager.finishLoading()
 
-        renderer = GameRenderer(assetManager, controller)
+        renderer = GameRenderer(game.batch, assetManager, controller)
     }
 
     override fun render(delta: Float) {
