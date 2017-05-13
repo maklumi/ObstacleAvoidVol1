@@ -1,4 +1,4 @@
-package com.obstacle.avoid.screen
+package com.obstacle.avoid.screen.game
 
 import com.badlogic.gdx.Screen
 import com.obstacle.avoid.ObstacleAvoidGame
