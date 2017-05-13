@@ -1,13 +1,24 @@
 package com.obstacle.avoid.screen
 
 import com.badlogic.gdx.Screen
+import com.obstacle.avoid.ObstacleAvoidGame
+import com.obstacle.avoid.assets.AssetDescriptors
 
-class GameScreen : Screen {
+class GameScreen(game: ObstacleAvoidGame) : Screen {
 
     private val controller = GameController()
-    private val renderer = GameRenderer(controller)
+    private val assetManager = game.assetManager
+    private lateinit var renderer: GameRenderer
 
     override fun show() {
+        assetManager.load(AssetDescriptors.FONT)
+        assetManager.load(AssetDescriptors.BACKGROUND)
+        assetManager.load(AssetDescriptors.OBSTACLE)
+        assetManager.load(AssetDescriptors.PLAYER)
+
+        assetManager.finishLoading()
+
+        renderer = GameRenderer(assetManager, controller)
     }
 
     override fun render(delta: Float) {
