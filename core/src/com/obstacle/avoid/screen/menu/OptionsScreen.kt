@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.assets.RegionNames
+import com.obstacle.avoid.common.GameManager
+import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.util.GdxUtils
 
@@ -49,6 +51,7 @@ class OptionsScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
             addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     checkMark.y = this@apply.y + 25
+                    GameManager.updateDifficulty(DifficultyLevel.EASY)
                 }
             })
         }
@@ -58,6 +61,7 @@ class OptionsScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
             addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     checkMark.y = this@apply.y + 25
+                    GameManager.updateDifficulty(DifficultyLevel.MEDIUM)
                 }
             })
         }
@@ -67,12 +71,21 @@ class OptionsScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
             addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     checkMark.y = this@apply.y + 25
+                    GameManager.updateDifficulty(DifficultyLevel.HARD)
+
                 }
+
             })
         }
 
         checkMark = Image(TextureRegionDrawable(checkMarkRegion))
         checkMark.setPosition(mediumButton.x + 50, mediumButton.y + 40, Align.center)
+        val difficultyLevel = GameManager.difficultyLevel
+        if (difficultyLevel.isEasy()) {
+            checkMark.y = easyButton.y + 25
+        } else if (difficultyLevel.isHard()) {
+            checkMark.y = hardButton.y + 25
+        }
 
 
         val bgRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND)

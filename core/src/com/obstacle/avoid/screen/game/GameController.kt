@@ -35,7 +35,6 @@ class GameController {
     var isGameOver = false
         get() = lives <= 0
 
-    var difficultyLevel = DifficultyLevel.EASY
 
     val obstaclePool: Pool<Obstacle> = Pools.get(Obstacle::class.java, 20)
     val background = Background().apply {
@@ -115,6 +114,7 @@ class GameController {
             val x = MathUtils.random(min, max)
             val y = GameConfig.WORLD_HEIGHT
 
+            val difficultyLevel = GameManager.difficultyLevel
             obstacle.position = Vector2(x, y)
             obstacle.ySpeed = difficultyLevel.obstacleSpeed
             obstacles.add(obstacle)
