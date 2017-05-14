@@ -22,9 +22,13 @@ object AssetPacker {
 //                "gameplay"
 //        )
 
+//        TexturePacker.process(settings,
+//                ASSET_INPUT_PATH + "/ui",
+//                ASSET_OUTPUT_PATH + "/ui",
+//                "ui")
         TexturePacker.process(settings,
-                ASSET_INPUT_PATH + "/ui",
+                ASSET_INPUT_PATH + "/skin",
                 ASSET_OUTPUT_PATH + "/ui",
-                "ui")
+                "uiskin")
     }
 }
