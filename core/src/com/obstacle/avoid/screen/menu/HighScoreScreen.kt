@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.assets.RegionNames
+import com.obstacle.avoid.common.GameManager
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.util.GdxUtils
 
@@ -42,7 +43,8 @@ class HighScoreScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
 
         val labelStyle = Label.LabelStyle(font, Color.GOLDENROD)
         val highScoreText = Label("HIGHSCORE", labelStyle)
-        val highScoreLabel = Label("100", labelStyle)
+        val highScoreString = GameManager.highScore.toString()
+        val highScoreLabel = Label(highScoreString, labelStyle)
         val backButton = ImageButton(TextureRegionDrawable(backRegion), TextureRegionDrawable(backPressedRegion)).apply {
             addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {

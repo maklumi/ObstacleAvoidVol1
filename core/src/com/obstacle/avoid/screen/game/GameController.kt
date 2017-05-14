@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
+import com.obstacle.avoid.common.GameManager
 import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.config.GameConfig.OBSTACLE_SIZE
@@ -52,7 +53,12 @@ class GameController {
 
         if (hasPlayerCollidedWithObstacle) {
             lives--
-            if (!isGameOver) restart()
+            if (isGameOver){
+                GameManager.updateHighScore(score)
+            } else {
+                restart()
+
+            }
         }
     }
 
