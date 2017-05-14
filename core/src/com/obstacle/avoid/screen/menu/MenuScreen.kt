@@ -92,7 +92,7 @@ class MenuScreen(val game: ObstacleAvoidGame) : ScreenAdapter() {
     }
 
     private fun showOptions() {
-
+        game.screen = OptionsScreen(game)
     }
 
     private fun createButton(atlas: TextureAtlas, upRegionName: String, downRegionName: String): ImageButton {
