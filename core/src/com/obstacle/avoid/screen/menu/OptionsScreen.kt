@@ -1,106 +1,77 @@
 package com.obstacle.avoid.screen.menu
 
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Align
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.assets.RegionNames
 import com.obstacle.avoid.common.GameManager
 import com.obstacle.avoid.config.DifficultyLevel
-import com.obstacle.avoid.config.GameConfig
 
 class OptionsScreen(game: ObstacleAvoidGame) : MenuScreenBase(game) {
 
 
-    private lateinit var checkMark: Image
-
+    private lateinit var checkBoxGroup: ButtonGroup<CheckBox>
+    private lateinit var easy: CheckBox
+    private lateinit var medium: CheckBox
+    private lateinit var hard: CheckBox
 
     override fun createUI(): Actor {
         val gamePlayAtlas = assetManager[AssetDescriptors.GAME_PLAY]
-        val uiAtlas = assetManager[AssetDescriptors.UI]
-        val font = assetManager[AssetDescriptors.FONT]
-        val labelStyle = Label.LabelStyle(font, Color.GOLDENROD)
-
-        val checkMarkRegion = uiAtlas.findRegion(RegionNames.CHECK_MARK)
-
-        val label = Label("DIFFICULTY", labelStyle)
-        label.setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 + 180, Align.center)
-
-        val easyButton = createButton(uiAtlas, RegionNames.EASY).apply {
-            setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 + 90, Align.center)
-            addListener(object : ChangeListener() {
-                override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    checkMark.y = this@apply.y + 25
-                    GameManager.updateDifficulty(DifficultyLevel.EASY)
-                }
-            })
-        }
-
-        val mediumButton = createButton(uiAtlas, RegionNames.MEDIUM).apply {
-            setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2, Align.center)
-            addListener(object : ChangeListener() {
-                override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    checkMark.y = this@apply.y + 25
-                    GameManager.updateDifficulty(DifficultyLevel.MEDIUM)
-                }
-            })
-        }
-
-        val hardButton = createButton(uiAtlas, RegionNames.HARD).apply {
-            setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 - 90, Align.center)
-            addListener(object : ChangeListener() {
-                override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    checkMark.y = this@apply.y + 25
-                    GameManager.updateDifficulty(DifficultyLevel.HARD)
-
-                }
-
-            })
-        }
-
-        checkMark = Image(TextureRegionDrawable(checkMarkRegion))
-        checkMark.setPosition(mediumButton.x + 50, mediumButton.y + 40, Align.center)
-        val difficultyLevel = GameManager.difficultyLevel
-        if (difficultyLevel.isEasy()) {
-            checkMark.y = easyButton.y + 25
-        } else if (difficultyLevel.isHard()) {
-            checkMark.y = hardButton.y + 25
-        }
-
+        val uiSkin = assetManager[AssetDescriptors.UI_SKIN]
 
         val bgRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND)
-        val background = Image(TextureRegionDrawable(bgRegion))
 
-        val backRegion = uiAtlas.findRegion(RegionNames.BACK)
-        val backPressedRegion = uiAtlas.findRegion(RegionNames.BACK_PRESSED)
+        val label = Label("DIFFICULTY", uiSkin)
 
-        val backButton = ImageButton(TextureRegionDrawable(backRegion), TextureRegionDrawable(backPressedRegion)).apply {
+        easy = checkBox(DifficultyLevel.EASY.name, uiSkin)
+//        easy.debug = true
+        medium = checkBox(DifficultyLevel.MEDIUM.name, uiSkin)
+        hard = checkBox(DifficultyLevel.HARD.name, uiSkin)
+
+        checkBoxGroup = ButtonGroup(easy, medium, hard)
+
+        val difficultyLevel = GameManager.difficultyLevel
+        checkBoxGroup.setChecked(difficultyLevel.name)
+
+        val backButton = TextButton("BACK", uiSkin).apply {
             addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     back()
                 }
             })
-            setPosition(GameConfig.HUD_WIDTH / 2, GameConfig.HUD_HEIGHT / 2 - 180, Align.center)
+        }
+
+        val listener = object : ChangeListener() {
+            override fun changed(event: ChangeListener.ChangeEvent?, actor: Actor?) {
+                difficultyChanged()
+            }
+        }
+
+        easy.addListener(listener)
+        medium.addListener(listener)
+        hard.addListener(listener)
+
+        val contentTable = Table(uiSkin).apply {
+            defaults().pad(10f)
+            setBackground(RegionNames.PANEL)
+            add(label).row()
+            add(easy).row()
+            add(medium).row()
+            add(hard).row()
+            add(backButton)
         }
 
         val table = Table()
         table.defaults().pad(15f)
         table.apply {
-            addActor(background)
-            addActor(label)
-            addActor(easyButton)
-            addActor(mediumButton)
-            addActor(hardButton)
-            addActor(checkMark)
-            addActor(backButton)
+            background = TextureRegionDrawable(bgRegion)
+            add(contentTable)
+            center()
+            setFillParent(true)
+            pack()
         }
         return table
     }
@@ -109,9 +80,19 @@ class OptionsScreen(game: ObstacleAvoidGame) : MenuScreenBase(game) {
         game.screen = MenuScreen(game)
     }
 
-    private fun createButton(atlas: TextureAtlas, regionName: String): ImageButton {
-        val region = atlas.findRegion(regionName)
+    private fun difficultyChanged() {
+        val checked = checkBoxGroup.checked
+        when (checked) {
+            easy -> GameManager.updateDifficulty(DifficultyLevel.EASY)
+            medium -> GameManager.updateDifficulty(DifficultyLevel.MEDIUM)
+            hard -> GameManager.updateDifficulty(DifficultyLevel.HARD)
+        }
+    }
 
-        return ImageButton(TextureRegionDrawable(region))
+    private fun checkBox(text: String, skin: Skin): CheckBox {
+        val checkBox = CheckBox(text, skin)
+        checkBox.left().pad(8f)
+        checkBox.labelCell.pad(8f)
+        return checkBox
     }
 }

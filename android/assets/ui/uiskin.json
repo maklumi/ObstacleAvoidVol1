@@ -48,6 +48,8 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
     "default": {
+      "down": "button-down",
+      "up": "button",
       "checkboxOn": "check-on",
       "checkboxOff": "check-off",
       "font": "default-font",
