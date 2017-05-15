@@ -1,9 +1,9 @@
 package com.obstacle.avoid.screen.menu
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.obstacle.avoid.ObstacleAvoidGame
@@ -15,39 +15,45 @@ class MenuScreen(game: ObstacleAvoidGame) : MenuScreenBase(game) {
 
     override fun createUI(): Actor {
         val gamePlayAtlas = assetManager[AssetDescriptors.GAME_PLAY]
-        val uiAtlas = assetManager[AssetDescriptors.UI]
-
         val bgRegion = gamePlayAtlas.findRegion(RegionNames.BACKGROUND)
-        val panelRegion = uiAtlas.findRegion(RegionNames.PANEL)
 
-        val playButton = createButton(uiAtlas, RegionNames.PLAY, RegionNames.PLAY_PRESSED)
+        val uiskin = assetManager[AssetDescriptors.UI_SKIN]
+
+        val playButton = TextButton("PLAY", uiskin)
         playButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 play()
             }
         })
 
-        val highScoreButton = createButton(uiAtlas, RegionNames.HIGH_SCORE, RegionNames.HIGH_SCORE_PRESSED)
+        val highScoreButton = TextButton("HIGH SCORE", uiskin)
         highScoreButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 showHighScore()
             }
         })
 
-        val optionsButton = createButton(uiAtlas, RegionNames.OPTIONS, RegionNames.OPTIONS_PRESSED)
+        val optionsButton = TextButton("OPTIONS", uiskin)
         optionsButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 showOptions()
             }
         })
 
+        val quitButton = TextButton("QUIT", uiskin)
+        quitButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                quit()
+            }
+        })
 
-        val buttonTable = Table().apply {
+        val buttonTable = Table(uiskin).apply {
             defaults().pad(20f)
-            background = TextureRegionDrawable(panelRegion)
+            setBackground(RegionNames.PANEL)
             add(playButton).row()
             add(highScoreButton).row()
             add(optionsButton).row()
+            add(quitButton)
             center()
         }
 
@@ -78,12 +84,7 @@ class MenuScreen(game: ObstacleAvoidGame) : MenuScreenBase(game) {
         game.screen = OptionsScreen(game)
     }
 
-    private fun createButton(atlas: TextureAtlas, upRegionName: String, downRegionName: String): ImageButton {
-        val upRegion = atlas.findRegion(upRegionName)
-        val downRegion = atlas.findRegion(downRegionName)
-
-        return ImageButton(TextureRegionDrawable(upRegion), TextureRegionDrawable(downRegion))
+    private fun quit() {
+        Gdx.app.exit()
     }
-
-
 }
