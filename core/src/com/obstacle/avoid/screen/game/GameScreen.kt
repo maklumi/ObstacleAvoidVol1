@@ -7,7 +7,7 @@ import com.obstacle.avoid.screen.menu.MenuScreen
 
 class GameScreen(val game: ObstacleAvoidGame) : Screen {
 
-    private val controller = GameController()
+    private val controller = GameController(game)
     private val assetManager = game.assetManager
     private lateinit var renderer: GameRenderer
 

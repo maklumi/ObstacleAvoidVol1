@@ -7,8 +7,9 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.Pools
+import com.obstacle.avoid.ObstacleAvoidGame
+import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.common.GameManager
-import com.obstacle.avoid.config.DifficultyLevel
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.config.GameConfig.OBSTACLE_SIZE
 import com.obstacle.avoid.entity.Background
@@ -16,7 +17,7 @@ import com.obstacle.avoid.entity.Obstacle
 import com.obstacle.avoid.entity.Player
 
 
-class GameController {
+class GameController(game: ObstacleAvoidGame) {
 //    private val log = Logger(GameController::class.java.simpleName, Logger.DEBUG)
 
     val player = Player().apply {
@@ -42,6 +43,8 @@ class GameController {
         setSize(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT)
     }
 
+    private val hitSound = game.assetManager[AssetDescriptors.HIT_SOUND]
+
     fun update(delta: Float) {
         if (isGameOver) return
 
@@ -51,8 +54,9 @@ class GameController {
         updateDisplayScore(delta)
 
         if (hasPlayerCollidedWithObstacle) {
+            hitSound.play()
             lives--
-            if (isGameOver){
+            if (isGameOver) {
                 GameManager.updateHighScore(score)
             } else {
                 restart()
